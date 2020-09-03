@@ -8,5 +8,15 @@ public class Car {
         this.name = name;
     }
 
-    // TODO: 2020/06/28 추가기능 구현 
+    public void increasePosition() {
+        this.position++;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getPosition() {
+        return this.position;
+    }
 }
