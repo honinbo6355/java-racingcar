@@ -8,10 +8,11 @@ public class Car {
         this.name = name;
     }
 
-    public void increasePosition() {
-        this.position++;
+    public void play(int randomVal) {
+        if (randomVal >= 4) {
+            this.position++;
+        }
     }
-
     public String getName() {
         return this.name;
     }

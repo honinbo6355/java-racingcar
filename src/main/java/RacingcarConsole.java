@@ -1,51 +1,55 @@
+import constants.Message;
 import domain.Car;
+import util.ScannerUtil;
 
 import java.util.*;
 
 public class RacingcarConsole {
-    private Scanner scanner = new Scanner(System.in);
     private Car[] cars;
-    private Random random = new Random();
+    private Random random;
+    private ScannerUtil scannerUtil;
 
+    public RacingcarConsole() {
+        this.random = new Random();
+        this.scannerUtil = new ScannerUtil();
+    }
     public void start() {
-        System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
+        String[] names = scannerUtil.getStrArrByInputMessage(Message.INPUT_CAR_NAME_MESSAGE);
+        createCars(names);
 
-        String[] names = scanner.next().split(",");
+        int attemptCount = scannerUtil.getIntByInputMessage(Message.ATTEMPT_COUNT_MESSAGE);
+        playRacing(attemptCount);
 
-        System.out.println(Arrays.toString(names));
+        for (int i=0; i<cars.length; i++) {
+            System.out.print(cars[i].getName() + " : ");
+            System.out.print(cars[i].getPosition());
+            System.out.println();
+        }
+    }
 
+    public void createCars(String[] names) {
         cars = new Car[names.length];
 
         for (int i=0; i<names.length; i++) {
             cars[i] = new Car(names[i]);
         }
+    }
 
-        System.out.println("시도할 회수는 몇회인가요?");
-        int count = scanner.nextInt();
+    public void playRacing(int attemptCount) {
+        System.out.println(Message.EXECUTE_RESULT_MESSAGE);
 
-        System.out.println("실행 결과");
+        String mark = "-";
 
-        for (int i=0; i<count; i++) {
+        for (int i=0; i<attemptCount; i++) {
             for (int j=0; j<cars.length; j++) {
                 int randomVal = random.nextInt(10);
 
-                if (randomVal >= 4) {
-                    cars[j].increasePosition();
-                }
+                cars[j].play(randomVal);
 
-                System.out.print(cars[j].getName() + " : ");
-
-                for (int k=0; k<cars[j].getPosition(); k++) {
-                    System.out.print("- ");
-                }
-                System.out.println();
+                String markRepeated = String.join(" ", Collections.nCopies(cars[j].getPosition(), mark));
+                System.out.println(cars[j].getName() + " : " + markRepeated);
             }
 
-            System.out.println();
-        }
-        for (int i=0; i<cars.length; i++) {
-            System.out.print(cars[i].getName() + " : ");
-            System.out.print(cars[i].getPosition());
             System.out.println();
         }
     }
